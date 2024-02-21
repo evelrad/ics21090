@@ -50,11 +50,6 @@ contract CharityLottery {
          resetLottery();
     }
 
-    function resetLottery() private {
-        delete players;
-        lotteryClosed = true;
-    }
-
 
     address[3] public lastWinners; // Αποθήκευση των τριών τελευταίων νικητών
 
@@ -81,6 +76,24 @@ contract CharityLottery {
         resetLottery();
     }
 
+    function resetLottery() public restricted {
+    require(lotteryClosed, "Lottery is not closed yet");
+
+    delete players;
+    delete winners;
+    lotteryClosed = false;
+    }
+
+    function destroyContract() public restricted {
+        selfdestruct(payable(manager));
+    }
+
+    function transferOwnership(address newOwner) public restricted {
+    require(newOwner != address(0), "Invalid new owner address");
+    manager = newOwner;
+    }
+
+
 
     function random() private view returns (uint) {
         return uint(block.timestamp);
@@ -96,5 +109,9 @@ contract CharityLottery {
 
     function getWinners() public view returns (uint256) {
         return winners.length;
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 }

@@ -7,7 +7,7 @@ class App extends Component {
   state = { // Αρχική κατάσταση της εφαρμογής
     manager: '', // Διεύθυνση του διαχειριστή του συμβολαίου
     players: [], // Λίστα με τους συμμετέχοντες στον λαχειοφόρο
-    balance: '', // Υπόλοιπο του συμβολαίου
+    balance: 0, // Υπόλοιπο του συμβολαίου
     value: '', // Τιμή που εισάγει ο χρήστης
     message: '', // Μήνυμα επικοινωνίας με τον χρήστη
     currentAccount: '', // Τρέχουσα διεύθυνση του χρήστη
@@ -54,13 +54,13 @@ class App extends Component {
             // Ενημέρωση του μηνύματος σφάλματος στον χρήστη σε περίπτωση σφάλματος
             console.error("Error during auto refresh:", error);
         }
-    }.bind(this), 5000); // Ανανέωση κάθε 5 δευτερόλεπτα
-}
+      }.bind(this), 5000); // Ανανέωση κάθε 5 δευτερόλεπτα
+    }
 
 
-// Κλήση της συνάρτησης για εκκίνηση της αυτόματης ανανέωσης
-startAutoRefresh();
-setInterval(startAutoRefresh, 5000); // Ανανέωση κάθε 5 δευτερόλεπτα
+    // Κλήση της συνάρτησης για εκκίνηση της αυτόματης ανανέωσης
+    startAutoRefresh();
+    setInterval(startAutoRefresh, 5000); // Ανανέωση κάθε 5 δευτερόλεπτα
 
 
   }
@@ -242,6 +242,7 @@ setInterval(startAutoRefresh, 5000); // Ανανέωση κάθε 5 δευτερ
         <h1>Lottery DApp</h1>
         <p>Current Metamask Wallet Address: {this.state.currentAccount}</p>
         <p>Contract Owner Address: {this.state.manager}</p>
+        <p>Total Contract Balance: {this.state.balance}</p>
         <p>{this.state.message}</p>
         <div>
         <h2>Car</h2>
@@ -269,7 +270,6 @@ setInterval(startAutoRefresh, 5000); // Ανανέωση κάθε 5 δευτερ
           </div>
           <p>Winning Item: {this.state.winningItem}</p>
           <button onClick={this.onWithdraw}>Withdraw</button>
-          <button>Declare Winner</button>
         </div>
           <div>
             <button onClick={this.onStartNewCycle}>Start New Cycle</button>
