@@ -233,6 +233,36 @@ class App extends Component {
     }
   }
 
+  // Μέθοδος που πραγματοποιεί την ανάληψη κερδών από το συμβόλαιο
+  onWithdraw = async () => {
+    try {
+        // Έλεγχος εάν η λαχειοφόρος είναι ανοιχτή
+        if (this.state.lotteryClosed) {
+            throw new Error('Lottery is closed');
+        }
+
+        // Αναμονή για την επιβεβαίωση του υπολοίπου του συμβολαίου
+        const contractBalance = await lottery.methods.getBalance().call();
+
+        // Έλεγχος εάν το υπόλοιπο του συμβολαίου είναι μεγαλύτερο από μηδέν
+        if (parseInt(contractBalance) <= 0) {
+            throw new Error('Contract balance is zero');
+        }
+
+        // Κλήση της μεθόδου onWithdraw από το συμβόλαιο
+        await lottery.methods.onWithdraw().send({
+            from: this.state.currentAccount // Χρήση της τρέχουσας διεύθυνσης ως αποστολέας
+        });
+
+        // Ενημέρωση του μηνύματος στον χρήστη
+        this.setState({ message: 'Withdraw successful' });
+    } catch (error) {
+        // Ενημέρωση του μηνύματος σφάλματος στον χρήστη σε περίπτωση σφάλματος
+        this.setState({ message: `Error withdrawing: ${error.message}` });
+    }
+  };
+
+
 
     
 

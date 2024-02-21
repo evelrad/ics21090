@@ -93,6 +93,13 @@ contract CharityLottery {
     manager = newOwner;
     }
 
+    function onWithdraw() public restricted {
+    require(!lotteryClosed, "Lottery is closed");
+    require(address(this).balance > 0, "Contract balance is zero");
+
+    address payable contractOwner = payable(manager);
+    contractOwner.transfer(address(this).balance);
+    }
 
 
     function random() private view returns (uint) {

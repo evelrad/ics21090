@@ -207,6 +207,13 @@ const abi = [
 	},
 	{
 		"inputs": [],
+		"name": "onWithdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "pickWinner",
 		"outputs": [],
 		"stateMutability": "nonpayable",
